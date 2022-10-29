@@ -1,17 +1,18 @@
 package server
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"test-task/internal/parser"
+	"test-task/internal/services"
 )
 
 type Server struct {
+	service *services.Service
 }
 
-func NewServer() *Server {
-	return &Server{}
+func NewServer(service *services.Service) *Server {
+	return &Server{service: service}
 }
 
 func (s *Server) RunServer() {
@@ -20,10 +21,6 @@ func (s *Server) RunServer() {
 
 	log.Printf("start HTTP server at %s", addr)
 	log.Fatal(http.ListenAndServe(addr, router))
-}
-
-func (s *Server) Greeting(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("hello")
 }
 
 func (s *Server) UploadFile(w http.ResponseWriter, r *http.Request) {
@@ -38,7 +35,6 @@ func (s *Server) UploadFile(w http.ResponseWriter, r *http.Request) {
 	transactions := parser.GetData(file, header)
 
 	for _, trs := range transactions {
-		fmt.Println(trs)
+		s.service.AddTransaction(trs)
 	}
-	return
 }

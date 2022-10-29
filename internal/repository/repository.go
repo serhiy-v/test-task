@@ -22,3 +22,15 @@ func NewConnection(dsn string) (*sql.DB, error) {
 
 	return conn, err
 }
+
+func (r *Repository) AddTransaction(transaction *Transaction) error {
+	q := "INSERT INTO transactions (transaction_id, request_id,terminal_id,partner_object_id,amount_total,amount_original,commission_ps,commision_client,commission_provider,date_input,date_post,status,payment_type,payment_number,service_id,service,payee_id,payee_name,payee_bank_mfo,payee_bank_account, payment_narrative) " +
+		"VALUES ($1,$2,$3$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20)"
+	_, err := r.Conn.Exec(q, transaction.TransactionId, transaction.RequestId, transaction.TerminalId,
+		transaction.PartnerObjectId, transaction.AmountTotal, transaction.AmountOriginal, transaction.CommissionPs,
+		transaction.CommissionClient, transaction.CommisionProvider, transaction.DateInput, transaction.DatePost,
+		transaction.Status, transaction.PaymentType, transaction.PaymentNumber, transaction.ServiceId, transaction.Service,
+		transaction.PayeeId, transaction.PayeeName, transaction.PayeeBankMfo, transaction.PayeeBankAccount, transaction.PaymentNarrative)
+
+	return err
+}

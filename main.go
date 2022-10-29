@@ -4,6 +4,7 @@ import (
 	"log"
 	"test-task/internal/repository"
 	"test-task/internal/server"
+	"test-task/internal/services"
 )
 
 func main() {
@@ -14,7 +15,8 @@ func main() {
 		log.Fatalf("%v", err)
 	}
 
-	_ = repository.NewRepository(db)
-	s := server.NewServer()
+	repo := repository.NewRepository(db)
+	service := services.NewService(repo)
+	s := server.NewServer(service)
 	s.RunServer()
 }
