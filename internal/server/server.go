@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"test-task/internal/parser"
 )
 
 type Server struct {
@@ -23,4 +24,21 @@ func (s *Server) RunServer() {
 
 func (s *Server) Greeting(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("hello")
+}
+
+func (s *Server) UploadFile(w http.ResponseWriter, r *http.Request) {
+	r.ParseMultipartForm(30 << 22)
+
+	file, header, err := r.FormFile("file")
+	if err != nil {
+		panic(err)
+	}
+	defer file.Close()
+
+	transactions := parser.GetData(file, header)
+
+	for _, trs := range transactions {
+		fmt.Println(trs)
+	}
+	return
 }
