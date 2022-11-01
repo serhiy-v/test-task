@@ -1,0 +1,506 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "REST API",
+    "description": "Test REST API project for internship",
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://localhost:8090/"
+    }
+  ],
+  "tags": [
+    {
+      "name": "transactions",
+      "description": "Everything about transactions"
+    }
+  ],
+  "paths": {
+    "/": {
+      "post": {
+        "tags": [
+          "transactions"
+        ],
+        "summary": "Upload csv file with transactions details",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transaction_id/{id}": {
+      "get": {
+        "tags": [
+          "transactions"
+        ],
+        "summary": "Get transactions by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the transaction",
+            "required": true,
+            "schema": {
+              "minimum": 0,
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/transaction"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/terminal_id/{id}": {
+      "get": {
+        "tags": [
+          "transactions"
+        ],
+        "summary": "Get transactions by  Termanal ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the terminal",
+            "required": true,
+            "schema": {
+              "minimum": 0,
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/transaction"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/status/{status}": {
+      "get": {
+        "tags": [
+          "transactions"
+        ],
+        "summary": "Get transactions by it's status",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "path",
+            "description": "Status of transaction",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/transaction"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payment_type/{payment}": {
+      "get": {
+        "tags": [
+          "transactions"
+        ],
+        "summary": "Get transactions by Payment Type",
+        "parameters": [
+          {
+            "name": "payment",
+            "in": "path",
+            "description": "type of payment",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/transaction"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/period": {
+      "get": {
+        "tags": [
+          "transactions"
+        ],
+        "summary": "Get transactions for a specific period of time",
+        "requestBody": {
+          "description": "The transaction to create.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "from",
+                  "to"
+                ],
+                "type": "object",
+                "properties": {
+                  "from": {
+                    "type": "string"
+                  },
+                  "to": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/transaction"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/narrative": {
+      "get": {
+        "tags": [
+          "transactions"
+        ],
+        "summary": "Get transactions for a specific text in Payment Narrative",
+        "requestBody": {
+          "description": "The transaction to create.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "text"
+                ],
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/transaction"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "transaction": {
+        "type": "object",
+        "properties": {
+          "TransactionId": {
+            "type": "integer"
+          },
+          "RequestId": {
+            "type": "integer"
+          },
+          "TerminalId": {
+            "type": "integer"
+          },
+          "PartnerObjectId": {
+            "type": "integer"
+          },
+          "AmountTotal": {
+            "type": "integer"
+          },
+          "AmountOriginal": {
+            "type": "integer"
+          },
+          "CommissionPs": {
+            "type": "number"
+          },
+          "CommissionClient": {
+            "type": "integer"
+          },
+          "CommisionProvider": {
+            "type": "integer"
+          },
+          "DateInput": {
+            "type": "string"
+          },
+          "DatePost": {
+            "type": "string"
+          },
+          "Status": {
+            "type": "string"
+          },
+          "PaymentType": {
+            "type": "string"
+          },
+          "PaymentNumber": {
+            "type": "string"
+          },
+          "ServiceId": {
+            "type": "integer"
+          },
+          "Service": {
+            "type": "string"
+          },
+          "PayeeId": {
+            "type": "integer"
+          },
+          "PayeeName": {
+            "type": "string"
+          },
+          "PayeeBankMfo": {
+            "type": "integer"
+          },
+          "PayeeBankAccount": {
+            "type": "string"
+          },
+          "PaymentNarrative": {
+            "type": "string"
+          }
+        }
+      },
+      "error": {
+        "type": "object",
+        "properties": {
+          "Error": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "parameters": {
+      "offsetParam": {
+        "name": "offset",
+        "in": "query",
+        "description": "The number of items to skip before starting to collect the result set.",
+        "schema": {
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "limitParam": {
+        "name": "limit",
+        "in": "query",
+        "description": "The numbers of items to return.",
+        "schema": {
+          "maximum": 50,
+          "minimum": 1,
+          "type": "integer",
+          "default": 20
+        }
+      }
+    }
+  }
+}

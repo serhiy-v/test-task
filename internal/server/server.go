@@ -21,7 +21,7 @@ func NewServer(service *services.Service) *Server {
 
 func (s *Server) RunServer() {
 	router := NewRouter(s)
-	addr := "localhost:8080"
+	addr := "localhost:8090"
 
 	log.Printf("start HTTP server at %s", addr)
 	log.Fatal(http.ListenAndServe(addr, router))

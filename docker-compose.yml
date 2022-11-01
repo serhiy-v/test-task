@@ -15,5 +15,13 @@ services:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
 
+  swagger-ui:
+    image: swaggerapi/swagger-ui
+    container_name: swagger_ui_container
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./api/swagger.json:/app/swagger.json
+
 volumes:
   database-data:
