@@ -42,7 +42,7 @@ func (s *Server) UploadFile(w http.ResponseWriter, r *http.Request) {
 	for _, trx := range transactions {
 		err = s.service.AddTransaction(trx)
 		if err != nil {
-			log.Println(err)
+			log.Printf("Unable to add transaction: %v\n", err)
 			return
 		}
 	}
@@ -54,13 +54,13 @@ func (s *Server) GetByTransactionID(w http.ResponseWriter, r *http.Request) {
 	trx, err := s.service.GetByTransactionID(id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
-		log.Println(err)
+		log.Printf("Unable to get transaction: %v\n", err)
 		return
 	}
 
 	err = json.NewEncoder(w).Encode(trx)
 	if err != nil {
-		log.Println(err)
+		log.Printf("Unable to encode transaction: %v\n", err)
 	}
 }
 
@@ -74,7 +74,7 @@ func (s *Server) GetByTerminalID(w http.ResponseWriter, r *http.Request) {
 		trx, err := s.service.GetByTerminalID(id)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
-			log.Println(err)
+			log.Printf("Unable to get transaction: %v\n", err)
 			return
 		}
 
@@ -83,7 +83,7 @@ func (s *Server) GetByTerminalID(w http.ResponseWriter, r *http.Request) {
 
 	err := json.NewEncoder(w).Encode(transactions)
 	if err != nil {
-		log.Println(err)
+		log.Printf("Unable to encode transaction: %v\n", err)
 	}
 }
 
@@ -93,7 +93,7 @@ func (s *Server) GetByStatus(w http.ResponseWriter, r *http.Request) {
 	transactions, err := s.service.GetByStatus(status)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
-		log.Println(err)
+		log.Printf("Unable to get transaction: %v\n", err)
 		return
 	}
 
@@ -110,7 +110,7 @@ func (s *Server) GetByPaymentType(w http.ResponseWriter, r *http.Request) {
 	transactions, err := s.service.GetByPaymentType(payment)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
-		log.Println(err)
+		log.Printf("Unable to get transaction: %v\n", err)
 		return
 	}
 
@@ -122,15 +122,13 @@ func (s *Server) GetByPaymentType(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) GetForPeriod(w http.ResponseWriter, r *http.Request) {
-	//var date repository.Date
-
 	from := r.URL.Query().Get("from")
 	to := r.URL.Query().Get("to")
 
 	transactions, err := s.service.GetByPeriod(from, to)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
-		log.Println(err)
+		log.Printf("Unable to get transaction: %v\n", err)
 		return
 	}
 
@@ -147,7 +145,7 @@ func (s *Server) GetByNarrative(w http.ResponseWriter, r *http.Request) {
 	transactions, err := s.service.GetByNarrative(text)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
-		log.Println(err)
+		log.Printf("Unable to get transaction: %v\n", err)
 		return
 	}
 
