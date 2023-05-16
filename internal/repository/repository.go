@@ -35,7 +35,7 @@ func (r *Repository) AddTransaction(transaction *Transaction) error {
 		"VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21)"
 	_, err := r.Conn.Exec(q, transaction.TransactionId, transaction.RequestId, transaction.TerminalId,
 		transaction.PartnerObjectId, transaction.AmountTotal, transaction.AmountOriginal, transaction.CommissionPs,
-		transaction.CommissionClient, transaction.CommisionProvider, transaction.DateInput, transaction.DatePost,
+		transaction.CommissionClient, transaction.CommissionProvider, transaction.DateInput, transaction.DatePost,
 		transaction.Status, transaction.PaymentType, transaction.PaymentNumber, transaction.ServiceId, transaction.Service,
 		transaction.PayeeId, transaction.PayeeName, transaction.PayeeBankMfo, transaction.PayeeBankAccount, transaction.PaymentNarrative)
 
@@ -51,7 +51,7 @@ func (r *Repository) GetByTransactionID(id string) (*Transaction, error) {
 
 	err := r.Conn.QueryRow(q, id).Scan(&transaction.TransactionId, &transaction.RequestId, &transaction.TerminalId,
 		&transaction.PartnerObjectId, &transaction.AmountTotal, &transaction.AmountOriginal, &transaction.CommissionPs,
-		&transaction.CommissionClient, &transaction.CommisionProvider, &transaction.DateInput, &transaction.DatePost,
+		&transaction.CommissionClient, &transaction.CommissionProvider, &transaction.DateInput, &transaction.DatePost,
 		&transaction.Status, &transaction.PaymentType, &transaction.PaymentNumber, &transaction.ServiceId, &transaction.Service,
 		&transaction.PayeeId, &transaction.PayeeName, &transaction.PayeeBankMfo, &transaction.PayeeBankAccount, &transaction.PaymentNarrative)
 
@@ -71,7 +71,7 @@ func (r *Repository) GetByTerminalID(id string) (*Transaction, error) {
 
 	err := r.Conn.QueryRow(q, id).Scan(&transaction.TransactionId, &transaction.RequestId, &transaction.TerminalId,
 		&transaction.PartnerObjectId, &transaction.AmountTotal, &transaction.AmountOriginal, &transaction.CommissionPs,
-		&transaction.CommissionClient, &transaction.CommisionProvider, &transaction.DateInput, &transaction.DatePost,
+		&transaction.CommissionClient, &transaction.CommissionProvider, &transaction.DateInput, &transaction.DatePost,
 		&transaction.Status, &transaction.PaymentType, &transaction.PaymentNumber, &transaction.ServiceId, &transaction.Service,
 		&transaction.PayeeId, &transaction.PayeeName, &transaction.PayeeBankMfo, &transaction.PayeeBankAccount, &transaction.PaymentNarrative)
 
@@ -97,7 +97,7 @@ func (r *Repository) GetByStatus(status string) ([]*Transaction, error) {
 		transaction := new(Transaction)
 		err := rows.Scan(&transaction.TransactionId, &transaction.RequestId, &transaction.TerminalId,
 			&transaction.PartnerObjectId, &transaction.AmountTotal, &transaction.AmountOriginal, &transaction.CommissionPs,
-			&transaction.CommissionClient, &transaction.CommisionProvider, &transaction.DateInput, &transaction.DatePost,
+			&transaction.CommissionClient, &transaction.CommissionProvider, &transaction.DateInput, &transaction.DatePost,
 			&transaction.Status, &transaction.PaymentType, &transaction.PaymentNumber, &transaction.ServiceId, &transaction.Service,
 			&transaction.PayeeId, &transaction.PayeeName, &transaction.PayeeBankMfo, &transaction.PayeeBankAccount, &transaction.PaymentNarrative)
 
@@ -130,7 +130,7 @@ func (r *Repository) GetByPaymentType(payment string) ([]*Transaction, error) {
 		transaction := new(Transaction)
 		err := rows.Scan(&transaction.TransactionId, &transaction.RequestId, &transaction.TerminalId,
 			&transaction.PartnerObjectId, &transaction.AmountTotal, &transaction.AmountOriginal, &transaction.CommissionPs,
-			&transaction.CommissionClient, &transaction.CommisionProvider, &transaction.DateInput, &transaction.DatePost,
+			&transaction.CommissionClient, &transaction.CommissionProvider, &transaction.DateInput, &transaction.DatePost,
 			&transaction.Status, &transaction.PaymentType, &transaction.PaymentNumber, &transaction.ServiceId, &transaction.Service,
 			&transaction.PayeeId, &transaction.PayeeName, &transaction.PayeeBankMfo, &transaction.PayeeBankAccount, &transaction.PaymentNarrative)
 
@@ -148,10 +148,10 @@ func (r *Repository) GetByPaymentType(payment string) ([]*Transaction, error) {
 	return transactions, nil
 }
 
-func (r *Repository) GetByPeriod(day Date) ([]*Transaction, error) {
+func (r *Repository) GetByPeriod(from, to string) ([]*Transaction, error) {
 	q := "SELECT * FROM transactions WHERE date_post >= $1 AND date_post <= $2"
 
-	rows, err := r.Conn.Query(q, day.DateFrom, day.DateTo)
+	rows, err := r.Conn.Query(q, from, to)
 	if err != nil {
 		return nil, err
 	}
@@ -163,7 +163,7 @@ func (r *Repository) GetByPeriod(day Date) ([]*Transaction, error) {
 		transaction := new(Transaction)
 		err := rows.Scan(&transaction.TransactionId, &transaction.RequestId, &transaction.TerminalId,
 			&transaction.PartnerObjectId, &transaction.AmountTotal, &transaction.AmountOriginal, &transaction.CommissionPs,
-			&transaction.CommissionClient, &transaction.CommisionProvider, &transaction.DateInput, &transaction.DatePost,
+			&transaction.CommissionClient, &transaction.CommissionProvider, &transaction.DateInput, &transaction.DatePost,
 			&transaction.Status, &transaction.PaymentType, &transaction.PaymentNumber, &transaction.ServiceId, &transaction.Service,
 			&transaction.PayeeId, &transaction.PayeeName, &transaction.PayeeBankMfo, &transaction.PayeeBankAccount, &transaction.PaymentNarrative)
 
@@ -197,7 +197,7 @@ func (r *Repository) GetByNarrative(text string) ([]*Transaction, error) {
 		transaction := new(Transaction)
 		err := rows.Scan(&transaction.TransactionId, &transaction.RequestId, &transaction.TerminalId,
 			&transaction.PartnerObjectId, &transaction.AmountTotal, &transaction.AmountOriginal, &transaction.CommissionPs,
-			&transaction.CommissionClient, &transaction.CommisionProvider, &transaction.DateInput, &transaction.DatePost,
+			&transaction.CommissionClient, &transaction.CommissionProvider, &transaction.DateInput, &transaction.DatePost,
 			&transaction.Status, &transaction.PaymentType, &transaction.PaymentNumber, &transaction.ServiceId, &transaction.Service,
 			&transaction.PayeeId, &transaction.PayeeName, &transaction.PayeeBankMfo, &transaction.PayeeBankAccount, &transaction.PaymentNarrative)
 

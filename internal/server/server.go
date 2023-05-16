@@ -68,18 +68,22 @@ func (s *Server) GetByTerminalID(w http.ResponseWriter, r *http.Request) {
 	id := mux.Vars(r)["id"]
 	ids := strings.Split(id, ",")
 
+	transactions := make([]*repository.Transaction, 0)
+
 	for _, id := range ids {
-		trx, err := s.service.GetByTransactionID(id)
+		trx, err := s.service.GetByTerminalID(id)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			log.Println(err)
 			return
 		}
 
-		err = json.NewEncoder(w).Encode(trx)
-		if err != nil {
-			log.Println(err)
-		}
+		transactions = append(transactions, trx)
+	}
+
+	err := json.NewEncoder(w).Encode(transactions)
+	if err != nil {
+		log.Println(err)
 	}
 }
 
@@ -93,12 +97,10 @@ func (s *Server) GetByStatus(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	for _, transaction := range transactions {
-		err = json.NewEncoder(w).Encode(transaction)
-		if err != nil {
-			log.Printf("Unable to encode transaction: %v\n", err)
-			return
-		}
+	err = json.NewEncoder(w).Encode(transactions)
+	if err != nil {
+		log.Printf("Unable to encode transaction: %v\n", err)
+		return
 	}
 }
 
@@ -112,57 +114,46 @@ func (s *Server) GetByPaymentType(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	for _, transaction := range transactions {
-		err = json.NewEncoder(w).Encode(transaction)
-		if err != nil {
-			log.Printf("Unable to encode transaction: %v\n", err)
-			return
-		}
+	err = json.NewEncoder(w).Encode(transactions)
+	if err != nil {
+		log.Printf("Unable to encode transaction: %v\n", err)
+		return
 	}
 }
 
 func (s *Server) GetForPeriod(w http.ResponseWriter, r *http.Request) {
-	var date repository.Date
-	err := json.NewDecoder(r.Body).Decode(&date)
-	if err != nil {
-		log.Printf("Unable to get date from request: %v\n", err)
-	}
+	//var date repository.Date
 
-	transactions, err := s.service.GetByPeriod(date)
+	from := r.URL.Query().Get("from")
+	to := r.URL.Query().Get("to")
+
+	transactions, err := s.service.GetByPeriod(from, to)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		log.Println(err)
 		return
 	}
 
-	for _, transaction := range transactions {
-		err = json.NewEncoder(w).Encode(transaction)
-		if err != nil {
-			log.Printf("Unable to encode transaction: %v\n", err)
-			return
-		}
+	err = json.NewEncoder(w).Encode(transactions)
+	if err != nil {
+		log.Printf("Unable to encode transaction: %v\n", err)
+		return
 	}
 }
 
 func (s *Server) GetByNarrative(w http.ResponseWriter, r *http.Request) {
-	var text repository.NarrativeText
-	err := json.NewDecoder(r.Body).Decode(&text)
-	if err != nil {
-		log.Printf("Unable to get date from request: %v\n", err)
-	}
+	text := r.URL.Query().Get("text")
 
-	transactions, err := s.service.GetByNarrative(text.Text)
+	transactions, err := s.service.GetByNarrative(text)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		log.Println(err)
 		return
 	}
 
-	for _, transaction := range transactions {
-		err = json.NewEncoder(w).Encode(transaction)
-		if err != nil {
-			log.Printf("Unable to encode transaction: %v\n", err)
-			return
-		}
+	err = json.NewEncoder(w).Encode(transactions)
+	if err != nil {
+		log.Printf("Unable to encode transaction: %v\n", err)
+		return
 	}
 }

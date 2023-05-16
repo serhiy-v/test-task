@@ -8,7 +8,7 @@ type Repository interface {
 	GetByTerminalID(id string) (*repository.Transaction, error)
 	GetByStatus(status string) ([]*repository.Transaction, error)
 	GetByPaymentType(status string) ([]*repository.Transaction, error)
-	GetByPeriod(day repository.Date) ([]*repository.Transaction, error)
+	GetByPeriod(from, to string) ([]*repository.Transaction, error)
 	GetByNarrative(text string) ([]*repository.Transaction, error)
 }
 
@@ -40,8 +40,8 @@ func (s *Service) GetByPaymentType(payment string) ([]*repository.Transaction, e
 	return s.repo.GetByPaymentType(payment)
 }
 
-func (s *Service) GetByPeriod(day repository.Date) ([]*repository.Transaction, error) {
-	return s.repo.GetByPeriod(day)
+func (s *Service) GetByPeriod(from, to string) ([]*repository.Transaction, error) {
+	return s.repo.GetByPeriod(from, to)
 }
 
 func (s *Service) GetByNarrative(text string) ([]*repository.Transaction, error) {
